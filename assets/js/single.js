@@ -1,5 +1,6 @@
 const issueContainerEl = document.getElementById('issues-container');
 const limitWarningEl = document.getElementById('limit-warning');
+const repoNameEl = document.getElementById('repo-name');
 
 const getRepoIssues = (repo) => {
     let apiUrl = 'https://api.github.com/repos/' + repo + '/issues?direction=asc';
@@ -14,9 +15,20 @@ const getRepoIssues = (repo) => {
                 }
             })
         } else {
-            alert('There was a problem with your request!');
+            document.location.replace('./index.html');
         }
     })
+}
+
+const getRepoName = () => {
+    let queryString = document.location.search;
+    let repoName = queryString.split('=')[1];
+    if (repoName) {
+        repoNameEl.textContent = repoName;
+        getRepoIssues(repoName);
+    } else {
+        document.location.replace('./index.html');
+    }
 }
 
 const displayIssues = (issues) => {
@@ -59,4 +71,4 @@ const displayWarning = (repo) => {
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues('facebook/react');
+getRepoName();
